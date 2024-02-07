@@ -122,7 +122,6 @@ class Residencia():
         data_frame = pd.read_csv(path, index_col=[0,1])
         data_frame = data_frame.replace(np.nan, None).drop_duplicates()
         
-        
         for index, row in data_frame.iterrows():
             try:     
                 residente = Residente(index[1])

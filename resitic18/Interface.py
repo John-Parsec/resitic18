@@ -23,22 +23,18 @@ class Interface(ctk.CTk):
         self.carregar_dados()
         
         # configure grid layout (4x4)
-        self.grid_columnconfigure((1, 2, 3, 4), weight=1)
+        self.grid_columnconfigure((1, 2, 3), weight=1)
         self.grid_rowconfigure((1, 2, 3, 4), weight=1)
         
         # create buttons
         self.btnAddResidentes = ctk.CTkButton(self, text="Add Residentes", command=self.select_trilha)
-        self.btnAddResidentes.grid(row=2, column=2)
+        self.btnAddResidentes.grid(row=1, column=2)
         
         self.btnExibirResidentes = ctk.CTkButton(self, text="Exibir Residentes", command=self.exibir_residentes)
-        self.btnExibirResidentes.grid(row=2, column=3)
+        self.btnExibirResidentes.grid(row=2, column=2)
         
         self.btnSalvarDados = ctk.CTkButton(self, text="Salvar Dados", command=self.salvar_dados)
         self.btnSalvarDados.grid(row=3, column=2)
-        
-        self.btnCarregarDados = ctk.CTkButton(self, text="Carregar Dados", command=self.carregar_dados)
-        self.btnCarregarDados.grid(row=3, column=3)
-        
         
     def select_trilha(self):
         self.janelaAdd = ctk.CTkToplevel(self)
@@ -56,8 +52,7 @@ class Interface(ctk.CTk):
 
         self.janelaAdd.btnTrilhaJava = ctk.CTkButton(self.janelaAdd, text="Trilha Java", command=lambda: self.add_residentes("java"))
         self.janelaAdd.btnTrilhaJava.grid(row=2, column=4)
-        
-        
+       
     def add_residentes(self, trilha):
         self.janelaAdd.btnTrilhaPython.destroy()
         self.janelaAdd.btnTrilhaDotNet.destroy()
