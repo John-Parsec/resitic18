@@ -264,9 +264,9 @@ class Interface(ctk.CTk):
             messagebox.showerror("Erro", e)
         
     def carregar_dados(self) -> None:
-        diretorio_atual = os.path.dirname(os.path.abspath(__file__))
+        home_diretorio = os.path.expanduser("~")
 
-        caminho_dados = os.path.join(diretorio_atual, 'data')
+        caminho_dados = os.path.join(home_diretorio, 'resitic_data')
 
         if not os.path.exists(caminho_dados):
             os.makedirs(caminho_dados)
