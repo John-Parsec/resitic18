@@ -118,7 +118,7 @@ class Interface(ctk.CTk):
         self.janelaAdd.inpCPF = ctk.CTkEntry(self.janelaAdd, textvariable=varCPF)
         self.janelaAdd.inpCPF.grid(row=1, column=3)
         
-        self.janelaAdd.inpAnoNasc = ctk.CTkEntry(self.janelaAdd, textvariable=varAnoNasc, validate="key", validatecommand=(self.register(Interface.validar_ano), "%P"))
+        self.janelaAdd.inpAnoNasc = ctk.CTkEntry(self.janelaAdd, textvariable=varAnoNasc, validate="key", validatecommand=(self.register(Interface.validar_numero), "%P"))
         self.janelaAdd.inpAnoNasc.grid(row=2, column=3)
         
         self.janelaAdd.inpIdade = ctk.CTkEntry(self.janelaAdd, textvariable=varIdade, validate="key", validatecommand=(self.register(Interface.validar_numero), "%P"))
@@ -197,7 +197,7 @@ class Interface(ctk.CTk):
             messagebox.showerror("Erro", "CPF inválido.")
             return
         
-        if len(ano) != 4 or ano == '':
+        if len(ano) != 4 or ano == '' or ano < "1900" or ano > str(date.today().year):
             messagebox.showerror("Erro", "Ano inválido.")
             return
         
@@ -397,21 +397,6 @@ class Interface(ctk.CTk):
             return True
         else:
             return False
-        
-    def validar_ano(ano):
-        if ano == "":
-            return True
-        
-        if len(ano) > 4:
-            return False
-        
-        if not ano.isdigit():
-            return False
-        
-        if ano <= "1920" or ano > str(date.today().year):
-            return False
-
-        return True
     
     def validar_formacao(formacao, formacaoGeral, formacaoEspecifica, andamentoGraduacao, tempoFormacao):
         if formacao == 0: # formação técnica
