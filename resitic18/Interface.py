@@ -23,22 +23,18 @@ class Interface(ctk.CTk):
         self.carregar_dados()
         
         # configure grid layout (4x4)
-        self.grid_columnconfigure((1, 2, 3, 4), weight=1)
+        self.grid_columnconfigure((1, 2, 3), weight=1)
         self.grid_rowconfigure((1, 2, 3, 4), weight=1)
         
         # create buttons
         self.btnAddResidentes = ctk.CTkButton(self, text="Add Residentes", command=self.select_trilha)
-        self.btnAddResidentes.grid(row=2, column=2)
+        self.btnAddResidentes.grid(row=1, column=2)
         
         self.btnExibirResidentes = ctk.CTkButton(self, text="Exibir Residentes", command=self.exibir_residentes)
-        self.btnExibirResidentes.grid(row=2, column=3)
+        self.btnExibirResidentes.grid(row=2, column=2)
         
         self.btnSalvarDados = ctk.CTkButton(self, text="Salvar Dados", command=self.salvar_dados)
         self.btnSalvarDados.grid(row=3, column=2)
-        
-        self.btnCarregarDados = ctk.CTkButton(self, text="Carregar Dados", command=self.carregar_dados)
-        self.btnCarregarDados.grid(row=3, column=3)
-        
         
     def select_trilha(self):
         self.janelaAdd = ctk.CTkToplevel(self)
@@ -56,8 +52,7 @@ class Interface(ctk.CTk):
 
         self.janelaAdd.btnTrilhaJava = ctk.CTkButton(self.janelaAdd, text="Trilha Java", command=lambda: self.add_residentes("java"))
         self.janelaAdd.btnTrilhaJava.grid(row=2, column=4)
-        
-        
+       
     def add_residentes(self, trilha):
         self.janelaAdd.btnTrilhaPython.destroy()
         self.janelaAdd.btnTrilhaDotNet.destroy()
@@ -197,7 +192,7 @@ class Interface(ctk.CTk):
             messagebox.showerror("Erro", "CPF inválido.")
             return
         
-        if len(ano) != 4 or ano == '':
+        if len(ano) != 4 or ano == '' or ano < "1900" or ano > str(date.today().year):
             messagebox.showerror("Erro", "Ano inválido.")
             return
         
@@ -223,6 +218,7 @@ class Interface(ctk.CTk):
             andamentoGraduacao = None
             
         erro_formatacao = Interface.validar_formacao(formacao, formacaoGeral, formacaoEspecifica, andamentoGraduacao, tempoFormacao)
+        
         if erro_formatacao:
             messagebox.showerror("Erro de formação", erro_formatacao)
             return
@@ -231,7 +227,11 @@ class Interface(ctk.CTk):
             formacaoGeral = formacoesGerais[formacaoGeral]
         if tempoFormacao:
             tempoFormacao = int(tempoFormacao)
-    
+        
+        if experienciaPrevia == "":
+            messagebox.showerror("Erro", "Experiência prévia não preenchida.")
+            return
+
         residente = {
             'identificador': cpf[:3] + ano[2:],
             'idade': int(variaveis['idade'].get()),
@@ -259,9 +259,9 @@ class Interface(ctk.CTk):
             messagebox.showerror("Erro", e)
         
     def carregar_dados(self) -> None:
-        diretorio_atual = os.path.dirname(os.path.abspath(__file__))
+        home_diretorio = os.path.expanduser("~")
 
-        caminho_dados = os.path.join(diretorio_atual, 'data')
+        caminho_dados = os.path.join(home_diretorio, 'resitic_data')
 
         if not os.path.exists(caminho_dados):
             os.makedirs(caminho_dados)

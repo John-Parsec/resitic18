@@ -98,9 +98,9 @@ class Residencia():
         data_frame = self.get_residentes()
         
         if path is None:
-            diretorio_atual = os.path.dirname(os.path.abspath(__file__))
+            home_diretorio = os.path.expanduser("~")
 
-            caminho_dados = os.path.join(diretorio_atual, 'data')
+            caminho_dados = os.path.join(home_diretorio, 'resitic_data')
 
             if not os.path.exists(caminho_dados):
                 os.makedirs(caminho_dados)
@@ -117,18 +117,10 @@ class Residencia():
             raise ValueError("Caminho não informado")
         
         if not os.path.exists(path):
-            raise ValueError("Caminho não existe")
+            return
         
         data_frame = pd.read_csv(path, index_col=[0,1])
         data_frame = data_frame.replace(np.nan, None).drop_duplicates()
-        
-        trilhas = data_frame.index.get_level_values('trilha').unique().values.tolist()
-                
-        for trilha in trilhas:
-            try:
-                self.add_trilha(trilha)
-            except ValueError as e:
-                print(e)
         
         for index, row in data_frame.iterrows():
             try:     
